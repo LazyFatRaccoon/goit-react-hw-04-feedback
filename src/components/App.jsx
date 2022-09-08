@@ -18,6 +18,21 @@ export class App extends Component {
     });
   };
 
+  handleTotal = () => {
+    const total = Object.values(this.state).reduce(
+      (count, acc) => count + acc,
+      0
+    );
+    return total;
+  };
+
+  handlePosFeedbacks = () => {
+    const posFeedbacks = Math.floor(
+      (this.state.Good / this.handleTotal()) * 100
+    );
+    return posFeedbacks;
+  };
+
   render() {
     return (
       <div
@@ -39,13 +54,19 @@ export class App extends Component {
         >
           <Section title="Please leave feedback">
             <FeedbackOptions
-              options={this.state}
+              options={Object.keys(this.state)}
               onLeaveFeedback={this.onLeaveFeedback}
             />
           </Section>
 
           <Section title="Statistics">
-            <Statistics data={this.state} />
+            <Statistics
+              good={this.state.Good}
+              neutral={this.state.Neutral}
+              bad={this.state.Bad}
+              total={this.handleTotal()}
+              posFeedbacks={this.handlePosFeedbacks()}
+            />
           </Section>
         </div>
       </div>

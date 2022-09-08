@@ -1,18 +1,14 @@
-import nextId from 'react-id-generator';
 import { Button, Div } from './FeedbackOptions.styled';
 import PropTypes from 'prop-types';
 
 const FeedbackOptions = ({ options, onLeaveFeedback }) => {
-  console.log(options);
-  const optionsArr = Object.keys(options).map(key => key);
-  console.log(optionsArr);
   return (
     <Div>
-      {optionsArr.map(option => {
+      {options.map(option => {
         return (
           <Button
             type="button"
-            key={nextId()}
+            key={option}
             onClick={() => {
               onLeaveFeedback(option);
             }}
@@ -26,11 +22,7 @@ const FeedbackOptions = ({ options, onLeaveFeedback }) => {
 };
 
 FeedbackOptions.propTypes = {
-  options: PropTypes.exact({
-    Good: PropTypes.number.isRequired,
-    Neutral: PropTypes.number.isRequired,
-    Bad: PropTypes.number.isRequired,
-  }).isRequired,
+  options: PropTypes.arrayOf(PropTypes.string.isRequired).isRequired,
   onLeaveFeedback: PropTypes.func.isRequired,
 };
 

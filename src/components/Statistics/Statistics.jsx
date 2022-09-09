@@ -2,7 +2,7 @@ import { P } from './Statistics.styled';
 import PropTypes from 'prop-types';
 
 const Statistics = ({ good, neutral, bad, total, posFeedbacks }) => {
-  if (total === 0) return <P>No feedback given</P>;
+ 
   return (
     <>
       <P>Good: {good}</P>

@@ -2,6 +2,7 @@ import { Component } from 'react';
 import FeedbackOptions from './FeedbackOptions';
 import Statistics from './Statistics';
 import Section from './Section';
+import { P, Div, AppContainer } from './App.styled.jsx';
 
 export class App extends Component {
   state = {
@@ -35,23 +36,8 @@ export class App extends Component {
 
   render() {
     return (
-      <div
-        style={{
-          height: '100vh',
-          display: 'flex',
-          justifyContent: 'center',
-          alignItems: 'center',
-          fontSize: 40,
-          color: '#010101',
-        }}
-      >
-        <div
-          style={{
-            display: 'flex',
-            flexDirection: 'column',
-            boxShadow: '1px 2px 9px #F4AAB9',
-          }}
-        >
+      <AppContainer>
+        <Div>
           <Section title="Please leave feedback">
             <FeedbackOptions
               options={Object.keys(this.state)}
@@ -60,16 +46,20 @@ export class App extends Component {
           </Section>
 
           <Section title="Statistics">
-            <Statistics
-              good={this.state.Good}
-              neutral={this.state.Neutral}
-              bad={this.state.Bad}
-              total={this.handleTotal()}
-              posFeedbacks={this.handlePosFeedbacks()}
-            />
+            {this.handleTotal() ? (
+              <Statistics
+                good={this.state.Good}
+                neutral={this.state.Neutral}
+                bad={this.state.Bad}
+                total={this.handleTotal()}
+                posFeedbacks={this.handlePosFeedbacks()}
+              />
+            ) : (
+              <P>No feedback given</P>
+            )}
           </Section>
-        </div>
-      </div>
+        </Div>
+      </AppContainer>
     );
   }
 }

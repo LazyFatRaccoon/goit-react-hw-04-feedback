@@ -1,65 +1,68 @@
-import { Component } from 'react';
+import { useState } from 'react';
 import FeedbackOptions from './FeedbackOptions';
 import Statistics from './Statistics';
 import Section from './Section';
 import { P, Div, AppContainer } from './App.styled.jsx';
 
-export class App extends Component {
-  state = {
-    Good: 0,
-    Neutral: 0,
-    Bad: 0,
+export default function App () {
+  const [good, setGood] = useState(0);
+  const [neutral, setNeutral] = useState(0);
+  const [bad, setBad] = useState(0);
+
+  const onLeaveFeedback = event => {
+    const { name } = event.target;
+    switch (name) {
+      case 'good':
+        setGood(good + 1);
+        break;
+      case 'neutral':
+        setNeutral(neutral + 1);
+        break;
+      case 'bad':
+        setBad(bad + 1);
+        break;
+      default:
+        return;
+    }
   };
 
-  onLeaveFeedback = name => {
-    this.setState(prevState => {
-      return {
-        [name]: prevState[name] + 1,
-      };
-    });
-  };
-
-  handleTotal = () => {
-    const total = Object.values(this.state).reduce(
-      (count, acc) => count + acc,
-      0
-    );
+  const handleTotal = () => {
+    const total = good + neutral + bad;
     return total;
   };
 
-  handlePosFeedbacks = () => {
-    const posFeedbacks = Math.floor(
-      (this.state.Good / this.handleTotal()) * 100
-    );
+  const handlePosFeedbacks = () => {
+    const posFeedbacks = Math.floor((good / handleTotal()) * 100);
     return posFeedbacks;
   };
 
-  render() {
-    return (
-      <AppContainer>
-        <Div>
-          <Section title="Please leave feedback">
-            <FeedbackOptions
-              options={Object.keys(this.state)}
-              onLeaveFeedback={this.onLeaveFeedback}
-            />
-          </Section>
+  return (
+    <AppContainer>
+      <Div>
+        <Section title="Please leave feedback">
+          <FeedbackOptions
+            good={good}
+            neutral={neutral}
+            bad={bad}
+            onLeaveFeedback={onLeaveFeedback}
+          />
+        </Section>
 
-          <Section title="Statistics">
-            {this.handleTotal() ? (
-              <Statistics
-                good={this.state.Good}
-                neutral={this.state.Neutral}
-                bad={this.state.Bad}
-                total={this.handleTotal()}
-                posFeedbacks={this.handlePosFeedbacks()}
-              />
-            ) : (
-              <P>No feedback given</P>
-            )}
-          </Section>
-        </Div>
-      </AppContainer>
-    );
-  }
-}
+        <Section title="Statistics">
+          {handleTotal() ? (
+            <Statistics
+              good={good}
+              neutral={neutral}
+              bad={bad}
+              total={handleTotal()}
+              posFeedbacks={handlePosFeedbacks()}
+            />
+          ) : (
+            <P>No feedback given</P>
+          )}
+        </Section>
+      </Div>
+    </AppContainer>
+  );
+};
+

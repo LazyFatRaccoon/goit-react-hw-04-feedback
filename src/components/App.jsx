@@ -9,8 +9,7 @@ export default function App () {
   const [neutral, setNeutral] = useState(0);
   const [bad, setBad] = useState(0);
 
-  const onLeaveFeedback = event => {
-    const { name } = event.target;
+  const onLeaveFeedback = name => {
     switch (name) {
       case 'good':
         setGood(s => s + 1);
@@ -41,9 +40,7 @@ export default function App () {
       <Div>
         <Section title="Please leave feedback">
           <FeedbackOptions
-            good={good}
-            neutral={neutral}
-            bad={bad}
+            options={['good', 'neutral', 'bad']}
             onLeaveFeedback={onLeaveFeedback}
           />
         </Section>
